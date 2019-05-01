@@ -1,10 +1,13 @@
 1. npm init -y  // para iniciar o projeto sem perguntas
 2. Instalar os pacotes:
     hapi,
-    dotenv e cross-env para configurar o .env
+    dotenv e cross-env para configurar o .env,
+    mongoose,
 COMANDOS para iniciar:
 .env.prod => cross-env NODE_ENV=prod node server.js
 .env.dev => cross-env NODE_ENV=dev node server.js
-
     
-3. Iniciar o servidor com as configurações basicas    
+3. Iniciar o servidor com as configurações basicas  
+4. Criar a conexão do DB
+5. Implantar conexão no server.js
+6. Criar as cunfções de CRUD do banco  

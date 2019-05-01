@@ -11,8 +11,9 @@ config ({
     path: configPatch
 })
 //###########################################################################
-
 const Hapi = require('hapi');
+
+const mongoConnect = require('./src/db/mongodb/mongoConnect');
 
 // Criar o servidor com suas configurações
 const server = Hapi.Server({
@@ -29,11 +30,14 @@ async function connectServer() {
 
             return 'Hello World!';
         }
-    })    ;
-
+    });
+    // Conectar o mongodb
+    await mongoConnect;
+    // Iniciar o servidor
     await server.start();
-    console.log('Servidor rodando na porta', server.info.port);
-
+    
+    console.log('Servidor rodando na porta', server.info.port);    
+    return server;
 };
 
-connectServer();
+module.exports = connectServer();
