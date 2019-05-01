@@ -1,0 +1,16 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "Back Engine CRUD With HapiJs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "gusttavo212",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "hapi": "^18.1.0"
+  }
+}

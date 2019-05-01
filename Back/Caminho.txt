@@ -1,0 +1,10 @@
+1. npm init -y  // para iniciar o projeto sem perguntas
+2. Instalar os pacotes:
+    hapi,
+    dotenv e cross-env para configurar o .env
+COMANDOS para iniciar:
+.env.prod => cross-env NODE_ENV=prod node server.js
+.env.dev => cross-env NODE_ENV=dev node server.js
+
+    
+3. Iniciar o servidor com as configurações basicas    
