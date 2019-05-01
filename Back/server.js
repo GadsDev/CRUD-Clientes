@@ -21,6 +21,7 @@ const Hapi = require('hapi');
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
+const hapiJwt = require('hapi-auth-jwt2');
 
 const mongoConnect = require('./src/db/mongodb/mongoConnect');
 const authRoute = require('./src/routes/authRoutes');
@@ -46,6 +47,7 @@ async function connectServer() {
     };
     // Plugins Hapi
     await server.register([
+        hapiJwt,
         Vision,
         Inert,
         {
@@ -53,7 +55,20 @@ async function connectServer() {
             options: swaggerOptions,
         },
     ]);
-
+    server.auth.strategy('jwt', 'jwt', {
+        key: process.env.JWT_SECRET,
+       /* options: {
+            expiresIn: 20
+       }*/
+       validate: (dados, request) => {
+           //Verificar no banco se o usuario continua ativo ou continua pagando
+           return {
+               isValid: true
+           }
+       }
+    })
+    // Usar a authenticação jwt criada
+    server.auth.default('jwt');
     // Conectar o mongodb
     await mongoConnect;
     // Iniciar o servidor

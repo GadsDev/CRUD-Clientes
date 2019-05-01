@@ -9,6 +9,11 @@ const USER = {
     username: 'xuxadasilva',
     password: '123',
 }
+
+const headers = joi.object({
+    authorization: joi.string().required(),
+}).unknown();
+  
 module.exports = {
 
     login() {
@@ -16,6 +21,8 @@ module.exports = {
             path: '/login',
             method: 'POST',
             config: {
+                // Não precisa de token pois ela gera o token
+                auth: false,
                 tags: ['api'],
                 description: 'Obter Token',
                 notes: 'Faz login com user e senha do banco',
