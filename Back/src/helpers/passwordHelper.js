@@ -16,7 +16,7 @@ module.exports = {
     },
     // Compara um HASH e uma SENHA
     comparePassword (pass, hash) {
-        return compareAsync(pass, SALT);
+        return compareAsync(pass, hash);
     }
     
 }

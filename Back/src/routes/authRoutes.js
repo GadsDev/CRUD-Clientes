@@ -2,6 +2,9 @@ const joi = require('joi');
 const boom = require('boom');
 const jwt = require('jsonwebtoken');
 
+const PasswordHelper = require('../helpers/passwordHelper');
+const UserCrud = require('../db/mongodb/CRUD/userCrud');
+
 const failAction = (request, headers, erro) => {
     throw erro;
 };
@@ -13,7 +16,7 @@ const USER = {
 const headers = joi.object({
     authorization: joi.string().required(),
 }).unknown();
-  
+
 module.exports = {
 
     login() {
@@ -35,18 +38,28 @@ module.exports = {
                 }
             },
             handler: async (request) => {
-                const { username, password } = request.payload;
+                const {
+                    username,
+                    password
+                } = request.payload;
 
-                //Se o login ou senha incorreto retorna não autorizado
-                if(
-                    username.toLowerCase() !== USER.username || 
-                    password !== USER.password
-                )
-                    return boom.unauthorized();
-                
+                const [user] = await UserCrud.read({
+                    username: username.toLowerCase()
+                })
+
+                if (!user) {
+                    return boom.unauthorized('O Usuario informado não existe');
+                }
+
+                const match = await PasswordHelper.comparePassword(password, user.password)
+
+                if(!match){
+                    return boom.unauthorized('O Usuario ou a Senha invalido');
+                }
+
                 const token = jwt.sign({
-                    username: username,
-                    id: 1
+                    username: usuario.username,
+                    id: usuario._id
                 }, process.env.JWT_SECRET)
                 return {
                     token
