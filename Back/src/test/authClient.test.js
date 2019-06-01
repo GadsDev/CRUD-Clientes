@@ -17,7 +17,7 @@ describe('Suite de testes de Autenticação', function () {
             url: '/login',
             payload: {
                 username: 'Xuxadasilva',
-                password: '123',
+                password: 's',
             }
         })
         
