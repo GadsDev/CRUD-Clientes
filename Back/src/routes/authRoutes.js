@@ -21,7 +21,7 @@ module.exports = {
             path: '/login',
             method: 'POST',
             config: {
-                // Não precisa de token pois ela gera o token
+                // Não precisa de token pois ele gera o token
                 auth: false,
                 tags: ['api'],
                 description: 'Obter Token',

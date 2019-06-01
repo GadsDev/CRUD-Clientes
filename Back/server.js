@@ -57,13 +57,15 @@ async function connectServer() {
     ]);
     server.auth.strategy('jwt', 'jwt', {
         key: process.env.JWT_SECRET,
-       /* options: {
-            expiresIn: 20
-       }*/
+        options: {
+            expiresIn: 3600
+       },
+       //Recbe o dado discriptografado e a request
        validate: (dados, request) => {
            //Verificar no banco se o usuario continua ativo ou continua pagando
+           // Se sim retorna true
            return {
-               isValid: true
+               isValid: true // caso não false
            }
        }
     })
