@@ -10,7 +10,7 @@ const failAction = (request, headers, erro) => {
 };
 const USER = {
     username: 'xuxadasilva',
-    password: '123',
+    password: 'gustavo@123',
 }
 
 const headers = joi.object({
@@ -33,36 +33,84 @@ module.exports = {
                     failAction,
                     payload: {
                         username: joi.string().required(),
-                        password: joi.string().required()
+                        password: joi.string().required(),
+                        email: joi.string().required(),
                     }
                 }
             },
             handler: async (request) => {
                 const {
                     username,
-                    password
+                    password,
                 } = request.payload;
 
                 const [user] = await UserCrud.read({
-                    username: username.toLowerCase()
+                    username: username
                 })
+
 
                 if (!user) {
                     return boom.unauthorized('O Usuario informado não existe');
                 }
 
                 const match = await PasswordHelper.comparePassword(password, user.password)
-
-                if(!match){
+                console.log('User ', match)
+                if (!match) {
                     return boom.unauthorized('O Usuario ou a Senha invalido');
                 }
 
                 const token = jwt.sign({
-                    username: usuario.username,
-                    id: usuario._id
+                    username: user.username,
+                    id: user._id
                 }, process.env.JWT_SECRET)
                 return {
                     token
+                }
+
+            }
+
+        }
+    },
+
+    cadastrar() {
+        return {
+            path: '/cadastrar',
+            method: 'POST',
+            config: {
+                // Não precisa de token pois ele cadastra
+                auth: false,
+                tags: ['api'],
+                description: 'Cadastro no banco',
+                notes: 'Faz o cadastro com os dados informados',
+                validate: {
+                    failAction,
+                    payload: {
+                        username: joi.string().required().min(3).max(100),
+                        password: joi.string().required().min(3).max(100),
+                        email: joi.string().required().min(3).max(100),
+                    }
+                }
+            },
+            handler: async (request) => {
+                try {
+                    const {
+                        username,
+                        password,
+                        email
+                    } = request.payload;
+                    const result = await UserCrud.create({
+                        username,
+                        password,
+                        email,
+                    });
+                    console.log('username', username)
+                    return {
+                        message: 'Usuario cadastrado com sucesso!',
+                        _id: result._id
+                    };
+                } catch (error) {
+                    console.log('Deu Ruim', error);
+                    return boom.internal();
                 }
 
             }

@@ -35,6 +35,7 @@ const server = Hapi.Server({
 async function connectServer() {
     // Rotas
     server.route(authRoute.login());
+    server.route(authRoute.cadastrar());
 
 
     // Config do Swagger

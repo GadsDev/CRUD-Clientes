@@ -10,6 +10,6 @@ module.exports = {
         return userSchema.create(item);
     },
     update(id, item, upsert = false) {
-        userSchema.update({_id: id}, item, {upsert: upsert, setDefaultsOnInsert: true});
+        userSchema.findOneAndUpdate({_id: id}, item, {upsert: upsert, setDefaultsOnInsert: true});
     }
 }

@@ -1,14 +1,20 @@
 const assert = require('assert');
 const server = require('../../server');
 let app = {};
-const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Inh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTU1Njc0MjMyM30.SYZs4yDN_UyZsmnPIky7wuv1hXI-pUroJfSuvj6gbk8"
+const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOiI1Y2YzYzk0YThiZmVjZTE3NjBmNDhlNmMiLCJpYXQiOjE1NTk0ODE4NzN9.-HXY_jhC8GSOOWEejt3TEYJzxX2KkCAcuZ8_kXO-p6A"
 const headers = {
     Authorization: TOKEN
 };
 const USER = {
     username: 'Xuxadasilva',
     password: 'gustavo@123',
-    email: 'pedrinho@gmail.com',
+    email: 'gusttavo212@gmail.com',
+}
+
+const USER_CADASTRO = {
+    username: 'josepCad',
+    password: '3332',
+    email: 'maria@gmail.com',
 }
 const USER_DB = {
    ...USER,
@@ -23,8 +29,13 @@ describe.only('Suite de testes de Autenticação', function () {
         app = await server;
 
         await Mongo;
-        const result = await userCrud.update(null, USER_DB, true);
-        console.log(result);
+        // Tenta criar se já existe atualiza
+        try {
+            result = await userCrud.create(USER_DB);
+        } catch (error) {
+            result = await userCrud.update(null, USER_DB, true);
+        }
+                
     })
 
     it('Deve obter um token', async () => {
@@ -35,9 +46,26 @@ describe.only('Suite de testes de Autenticação', function () {
         })
         
         const dados = JSON.parse(result.payload);
-
+        console.log('dados', dados);
         assert.deepEqual(result.statusCode, 200);
         assert.ok(dados.token.length > 10);
+    }),
+
+    it.only('Deve cadastrar um usuario', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/cadastrar',
+            payload: USER_CADASTRO,
+        })
+        
+        const statusCode = result.statusCode;
+        const { 
+            message,
+            _id
+         } = JSON.parse(result.payload);
+        assert.ok(statusCode === 200);
+        assert.notStrictEqual(_id, undefined);
+        assert.deepEqual(message, 'Usuario cadastrado com sucesso!')
     })
     
 })
