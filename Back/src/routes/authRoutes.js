@@ -103,13 +103,13 @@ module.exports = {
                         password,
                         email,
                     });
-                    console.log('username', username)
+                  
                     return {
                         message: 'Usuario cadastrado com sucesso!',
                         _id: result._id
                     };
                 } catch (error) {
-                    console.log('Deu Ruim', error);
+                  
                     return boom.internal();
                 }
 

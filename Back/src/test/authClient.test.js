@@ -46,7 +46,7 @@ describe.only('Suite de testes de Autenticação', function () {
         })
         
         const dados = JSON.parse(result.payload);
-        console.log('dados', dados);
+       
         assert.deepEqual(result.statusCode, 200);
         assert.ok(dados.token.length > 10);
     }),
