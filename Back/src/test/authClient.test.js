@@ -24,7 +24,7 @@ const USER_DB = {
 const Mongo = require('../db/mongodb/mongoConnect');
 const userCrud = require('../db/mongodb/CRUD/userCrud');
 
-describe.only('Suite de testes de Autenticação', function () {
+describe('Suite de testes de Autenticação', function () {
     this.beforeAll(async () => {
         app = await server;
 
@@ -51,7 +51,7 @@ describe.only('Suite de testes de Autenticação', function () {
         assert.ok(dados.token.length > 10);
     }),
 
-    it.only('Deve cadastrar um usuario', async () => {
+    it('Deve cadastrar um usuario', async () => {
         const result = await app.inject({
             method: 'POST',
             url: '/cadastrar',
@@ -62,10 +62,17 @@ describe.only('Suite de testes de Autenticação', function () {
             message,
             _id
          } = JSON.parse(result.payload);
-         console.log('status', _id);
-        assert.ok(statusCode === 200);
-        assert.notStrictEqual(_id, undefined);
-        assert.deepEqual(message, 'Usuario cadastrado com sucesso!')
+        // If não cadastrado
+        if(statusCode === 200) {
+            assert.ok(statusCode === 200);
+            assert.notStrictEqual(_id, undefined);
+            assert.deepEqual(message, 'Usuario cadastrado com sucesso!')
+        // Se já cadastrado um email igual
+        }else if(statusCode === 500) {           
+            assert.ok(statusCode === 500);           
+            assert.deepEqual(message, 'An internal server error occurred')
+        }
+       
     })
     
 })
