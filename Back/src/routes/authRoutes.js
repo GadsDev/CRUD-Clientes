@@ -108,9 +108,17 @@ module.exports = {
                         message: 'Usuario cadastrado com sucesso!',
                         _id: result._id
                     };
-                } catch (error) {
-                  
-                    return boom.internal();
+                } catch (error) {           
+                    if (error.name === 'MongoError' && error.code === 11000) {
+                        return {
+                            message: 'memes',
+                            _id: 'memes'
+                        };
+                    }       
+                    return {
+                        message: boom.internal(),
+                        _id: error
+                    };
                 }
 
             }

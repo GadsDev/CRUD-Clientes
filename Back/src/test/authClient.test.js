@@ -56,13 +56,13 @@ describe.only('Suite de testes de Autenticação', function () {
             method: 'POST',
             url: '/cadastrar',
             payload: USER_CADASTRO,
-        })
-        
+        })       
         const statusCode = result.statusCode;
         const { 
             message,
             _id
          } = JSON.parse(result.payload);
+         console.log('status', _id);
         assert.ok(statusCode === 200);
         assert.notStrictEqual(_id, undefined);
         assert.deepEqual(message, 'Usuario cadastrado com sucesso!')
