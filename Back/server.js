@@ -22,6 +22,7 @@ const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const hapiJwt = require('hapi-auth-jwt2');
+const hapiCors = require('hapi-cors');
 
 const mongoConnect = require('./src/db/mongodb/mongoConnect');
 const authRoute = require('./src/routes/authRoutes');
@@ -48,6 +49,7 @@ async function connectServer() {
     };
     // Plugins Hapi
     await server.register([
+        hapiCors,
         hapiJwt,
         Vision,
         Inert,
@@ -55,6 +57,7 @@ async function connectServer() {
             plugin: HapiSwagger,
             options: swaggerOptions,
         },
+
     ]);
     server.auth.strategy('jwt', 'jwt', {
         key: process.env.JWT_SECRET,
