@@ -10,6 +10,7 @@ const failAction = (request, headers, erro) => {
 };
 const USER = {
     username: 'xuxadasilva',
+    email: 'gusttavo212@gmail.com',
     password: 'gustavo@123',
 }
 
@@ -40,17 +41,17 @@ module.exports = {
             },
             handler: async (request) => {
                 const {
-                    username,
+                    email,
                     password,
                 } = request.payload;
 
                 const [user] = await UserCrud.read({
-                    username: username
+                    email: email
                 })
 
 
                 if (!user) {
-                    return boom.unauthorized('O Usuario informado não existe');
+                    return boom.unauthorized('O Email informado não existe');
                 }
 
                 const match = await PasswordHelper.comparePassword(password, user.password)
@@ -60,7 +61,7 @@ module.exports = {
                 }
 
                 const token = jwt.sign({
-                    username: user.username,
+                    email: user.email,
                     id: user._id
                 }, process.env.JWT_SECRET)
                 return {
@@ -93,21 +94,27 @@ module.exports = {
             },
             handler: async (request) => {
                 try {
-                    const {
-                        username,
-                        password,
-                        email
-                    } = request.payload;
-                    const result = await UserCrud.create({
-                        username,
-                        password,
+                    const {  
+                        username, 
                         email,
-                    });
+                        password,
+                    } = request.payload;
+
+                    const hashPass = await PasswordHelper.hashPassword(password);
+
+                    const newUser = {
+                        username: username,
+                        email: email,
+                        password: hashPass,
+                    }                  
+                   
+                    const result = await UserCrud.create(newUser);
                   
                     return {
                         message: 'Usuario cadastrado com sucesso!',
                         _id: result._id
                     };
+                    
                 } catch (error) {  
                     return error
                 }
