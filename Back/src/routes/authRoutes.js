@@ -33,7 +33,7 @@ module.exports = {
                 validate: {
                     failAction,
                     payload: {
-                        username: joi.string().required(),
+                        username: joi.string(),
                         password: joi.string().required(),
                         email: joi.string().required(),
                     }
