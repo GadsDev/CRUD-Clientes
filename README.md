@@ -7,6 +7,7 @@ Sistema de cadastro e login para clientes. Usando atenticação JWT e  criptogra
     yarn install
 
 #Variaveis de ambiente para fazer a configuração do projeto
+
   As variaveis de ambiente devem estar em /Back/config/
   .env.prod
   .env.dev
@@ -20,7 +21,9 @@ Sistema de cadastro e login para clientes. Usando atenticação JWT e  criptogra
 
     npm test ou
     yarn run test
-A aplicação vai rodar em http://localhost:PORT/
+    A aplicação vai rodar em http://localhost:PORT/
+
 #Documentação com as rotas
+
     http://localhost:port/documentation
     Ex: http://localhost:8000/documentation
