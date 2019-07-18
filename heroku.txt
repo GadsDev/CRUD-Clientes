@@ -3,5 +3,12 @@ heroku app:list
 heroku apps:create login-back-gads
 Pega o Link do Git Gerado
 
+git init
 heroku git:remote --app login-back-gads
 git remote -v
+
+git add .
+git commit -am "make it better"
+git push heroku master
+
+Ou adicionar um repositorio existente heroku git:remote -a login-back-gads
