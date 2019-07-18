@@ -31,9 +31,9 @@ describe('Suite de testes de Autenticação', function () {
         await Mongo;
         // Tenta criar se já existe atualiza
         try {
-            result = await userCrud.create(USER_DB);
+            result = await userCrud.create(USER);
         } catch (error) {
-            result = await userCrud.update(null, USER_DB, true);
+            result = await userCrud.update(null, USER, true);
         }
                 
     })
