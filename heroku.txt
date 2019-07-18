@@ -1,0 +1,2 @@
+heroku apps:create adm-painel-back-gads
+
